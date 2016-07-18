@@ -1,0 +1,12 @@
+{
+  "name": "@trystal/tryurl",
+  "version": "1.0.1",
+  "description": "Url for use in Trystal",
+  "main": "tryurl.js",
+  "typings": "tryurl.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
