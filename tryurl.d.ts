@@ -16,9 +16,9 @@ declare module "@trystal/tryurl" {
     constructor(
       uid:string, 
       filename:string, 
-      view:Views, 
-      lineId: string | null, 
-      isRO:boolean);
+      view?:Views, 
+      lineId?: string, 
+      isRO?:boolean);
 
     static simple(owner: string, filename: string, perm: string):TryUrl
   }
