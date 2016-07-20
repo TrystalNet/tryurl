@@ -1,12 +1,16 @@
 {
   "name": "@trystal/tryurl",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Url for use in Trystal",
   "main": "index.js",
   "typings": "index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TrystalNet/tryurl.git"
+  },
+  "author": "Terence O'Neill",
   "license": "ISC"
 }
