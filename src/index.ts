@@ -1,4 +1,5 @@
 export enum Views { edit = 1, published = 2 }
+export type RORW = 'rw' | 'ro'
 
 export function Parse(url: string) {
   interface Wip {
@@ -78,7 +79,7 @@ export class TryUrl {
     return true
   }
 
-  static simple(owner: string, filename: string, perm: string) {
+  static simple(owner: string, filename: string, perm: RORW) {
     if (!filename) return null
     return new TryUrl(owner, filename, Views.edit, null, perm !== 'rw')
   }
