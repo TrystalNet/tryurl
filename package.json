@@ -1,6 +1,6 @@
 {
   "name": "@trystal/tryurl",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Url for use in Trystal",
   "main": "index.js",
   "typings": "index.d.ts",
