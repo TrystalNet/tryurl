@@ -5,30 +5,30 @@
 })(exports.Views || (exports.Views = {}));
 var Views = exports.Views;
 function Parse(url) {
-    var wip = {
-        url: url,
+    const wip = {
+        url,
         lineId: null,
         view: Views.published,
         isRO: true
     };
-    var checkForLineId = function (wip) {
-        var url = wip.url;
-        var rgx = /#([a-z0-9]+)$/i;
-        var matches = rgx.exec(url);
+    let checkForLineId = (wip) => {
+        const { url } = wip;
+        const rgx = /#([a-z0-9]+)$/i;
+        const matches = rgx.exec(url);
         wip.lineId = matches ? matches[1] : null;
         if (matches)
             wip.url = url.replace(rgx, '');
     };
-    var checkForRender = function (wip) {
+    const checkForRender = (wip) => {
         function strToView(s) {
             switch (s.toLowerCase()) {
                 case 'edit': return Views.edit;
             }
             return Views.published;
         }
-        var url = wip.url;
-        var rgx = /\/(published|edit)$/i;
-        var matches = rgx.exec(url);
+        const { url } = wip;
+        const rgx = /\/(published|edit)$/i;
+        const matches = rgx.exec(url);
         if (matches) {
             wip.view = strToView(matches[1]);
             wip.isRO = false;
@@ -41,57 +41,45 @@ function Parse(url) {
     };
     checkForLineId(wip);
     checkForRender(wip);
-    var re = /^trystal:\/\/([^\/]{2,20})\/([^\/]{3,50})$/i;
-    var matches = re.exec(wip.url);
+    const re = /^trystal:\/\/([^\/]{2,20})\/([^\/]{3,50})$/i;
+    const matches = re.exec(wip.url);
     if (!matches)
         return null;
-    var uid = matches[1];
-    var filename = matches[2];
-    var view = wip.view, lineId = wip.lineId, isRO = wip.isRO;
+    const uid = matches[1];
+    const filename = matches[2];
+    const { view, lineId, isRO } = wip;
     return new TryUrl(uid, filename, view, lineId, isRO);
 }
 exports.Parse = Parse;
-var TryUrl = (function () {
-    function TryUrl(uid, filename, view, lineId, isRO) {
-        if (view === void 0) { view = Views.published; }
-        if (lineId === void 0) { lineId = null; }
-        if (isRO === void 0) { isRO = true; }
+class TryUrl {
+    constructor(uid, filename, view = Views.published, lineId = null, isRO = true) {
         this.uid = uid;
         this.filename = filename;
         this.view = view;
         this.lineId = lineId;
         this.isRO = isRO;
     }
-    Object.defineProperty(TryUrl.prototype, "url", {
-        get: function () {
-            var bits = [this.uid, this.filename];
-            if (this.view)
-                bits.push(Views[this.view]);
-            if (this.lineId)
-                bits.push("#" + this.lineId);
-            return "trystal://" + bits.join('/');
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(TryUrl.prototype, "isValid", {
-        get: function () {
-            if (!this.uid)
-                return false;
-            if (!this.filename)
-                return false;
-            return true;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    TryUrl.simple = function (owner, filename, perm) {
+    get url() {
+        const bits = [this.uid, this.filename];
+        if (this.view)
+            bits.push(Views[this.view]);
+        if (this.lineId)
+            bits.push(`#${this.lineId}`);
+        return `trystal://${bits.join('/')}`;
+    }
+    get isValid() {
+        if (!this.uid)
+            return false;
+        if (!this.filename)
+            return false;
+        return true;
+    }
+    static simple(owner, filename, perm) {
         if (!filename)
             return null;
         return new TryUrl(owner, filename, Views.edit, null, perm !== 'rw');
-    };
-    return TryUrl;
-}());
+    }
+}
 exports.TryUrl = TryUrl;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = TryUrl;
