@@ -3,7 +3,7 @@ export enum Views { edit = 1, published = 2 }
 export function Parse(url: string) : TryUrl
 
 export class TryUrl {
-  uid:string 
+  userId:string 
   filename:string 
   view: Views 
   lineId: string | null 
@@ -12,11 +12,11 @@ export class TryUrl {
   isValid:boolean
 
   constructor(
-    uid:string, 
+    userId:string, 
     filename:string, 
     view?:Views, 
     lineId?: string, 
     isRO?:boolean);
 
-  static simple(owner: string, filename: string, perm: string):TryUrl
+  static simple(userId: string, filename: string, perm: string):TryUrl
 }

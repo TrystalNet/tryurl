@@ -45,22 +45,22 @@ function Parse(url) {
     const matches = re.exec(wip.url);
     if (!matches)
         return null;
-    const uid = matches[1];
-    const filename = matches[2];
+    const userId = matches[1];
+    const trystId = matches[2];
     const { view, lineId, isRO } = wip;
-    return new TryUrl(uid, filename, view, lineId, isRO);
+    return new TryUrl(userId, trystId, view, lineId, isRO);
 }
 exports.Parse = Parse;
 class TryUrl {
-    constructor(uid, filename, view = Views.published, lineId = null, isRO = true) {
-        this.uid = uid;
+    constructor(userId, filename, view = Views.published, lineId = null, isRO = true) {
+        this.userId = userId;
         this.filename = filename;
         this.view = view;
         this.lineId = lineId;
         this.isRO = isRO;
     }
     get url() {
-        const bits = [this.uid, this.filename];
+        const bits = [this.userId, this.filename];
         if (this.view)
             bits.push(Views[this.view]);
         if (this.lineId)
@@ -68,16 +68,16 @@ class TryUrl {
         return `trystal://${bits.join('/')}`;
     }
     get isValid() {
-        if (!this.uid)
+        if (!this.userId)
             return false;
         if (!this.filename)
             return false;
         return true;
     }
-    static simple(owner, filename, perm) {
+    static simple(userId, filename, perm) {
         if (!filename)
             return null;
-        return new TryUrl(owner, filename, Views.edit, null, perm !== 'rw');
+        return new TryUrl(userId, filename, Views.edit, null, perm !== 'rw');
     }
 }
 exports.TryUrl = TryUrl;

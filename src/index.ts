@@ -51,15 +51,15 @@ export function Parse(url: string) {
   const re = /^trystal:\/\/([^\/]{2,20})\/([^\/]{3,50})$/i
   const matches = re.exec(wip.url)
   if (!matches) return null
-  const uid = matches[1]
-  const filename = matches[2]
+  const userId = matches[1]
+  const trystId = matches[2]
   const {view, lineId, isRO} = wip
-  return new TryUrl(uid, filename, view, lineId, isRO)
+  return new TryUrl(userId, trystId, view, lineId, isRO)
 }
 
 export class TryUrl {
   constructor(
-    public uid:string, 
+    public userId:string, 
     public filename:string, 
     public view = Views.published, 
     public lineId = <string | null>null, 
@@ -67,21 +67,21 @@ export class TryUrl {
   }
 
   get url():string {
-    const bits = [this.uid, this.filename]
+    const bits = [this.userId, this.filename]
     if (this.view) bits.push(Views[this.view])
     if (this.lineId) bits.push(`#${this.lineId}`)
     return `trystal://${bits.join('/')}`
   }
 
   get isValid() {
-    if(!this.uid) return false
+    if(!this.userId) return false
     if(!this.filename) return false 
     return true
   }
 
-  static simple(owner: string, filename: string, perm: RORW) {
+  static simple(userId: string, filename: string, perm: RORW) {
     if (!filename) return null
-    return new TryUrl(owner, filename, Views.edit, null, perm !== 'rw')
+    return new TryUrl(userId, filename, Views.edit, null, perm !== 'rw')
   }
 }
 
